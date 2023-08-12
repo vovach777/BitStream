@@ -57,7 +57,7 @@ class BitWriter {
     void printBits(std::ostream& o) const {
         auto count = size();
         for (auto byte : vec) {
-            if (cout-- ==  0)
+            if (count-- ==  0)
                     return;
             for (int i = 7; i >= 0; --i) {
                 o << ((byte >> i) & 1);
