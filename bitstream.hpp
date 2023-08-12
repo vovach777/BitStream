@@ -55,14 +55,16 @@ class BitWriter {
 
     // Метод для вывода данных (для проверки)
     void printBits(std::ostream& o) const {
-        for (auto it = data(), end = it + size(); it != end; ++it) {
-            auto byte = *it;
+        auto count = size();
+        for (auto byte : vec) {
+            if (cout-- ==  0)
+                    return;
             for (int i = 7; i >= 0; --i) {
                 o << ((byte >> i) & 1);
             }
             o << " ";
         }
-        o << "\n";
+        //o << "\n";
     }
 
    private:
@@ -151,7 +153,7 @@ class BitReader {
             }
             o << " ";
         }
-        o << "\n";
+       // o << "\n";
     }
 
     size_t get_index() { return index; }
