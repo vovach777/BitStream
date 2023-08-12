@@ -167,12 +167,12 @@ class BitReader {
 };
 
 inline std::ostream& operator<<(std::ostream& o, BitWriter const& a) {
-    a(o);
+    a.printBits(o);
     return o;
 }
 
 inline std::ostream& operator<<(std::ostream& o, BitReader const& a) {
-    a(o);
+    a.printBits(o);
     return o;
 }
 
