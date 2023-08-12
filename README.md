@@ -2,7 +2,7 @@
 Bit writer to buffer and read from buffer for codecs. based on ffmpeg code
 
 ```c++
-#inclide <iostream>
+#include <iostream>
 #include "bitstream.hpp"
 
 int main() {
