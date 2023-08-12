@@ -166,12 +166,12 @@ class BitReader {
     size_t size_in_bits;
 };
 
-inline ostream& operator<<(ostream& o, BitWriter const& a) {
+inline std::ostream& operator<<(std::ostream& o, BitWriter const& a) {
     a(o);
     return o;
 }
 
-inline ostream& operator<<(ostream& o, BitReader const& a) {
+inline std::ostream& operator<<(std::ostream& o, BitReader const& a) {
     a(o);
     return o;
 }
