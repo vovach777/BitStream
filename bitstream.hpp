@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
+#include <ostream>
 #include <vector>
 
 class BitWriter {
@@ -53,15 +54,15 @@ class BitWriter {
     }
 
     // Метод для вывода данных (для проверки)
-    void printBits() const {
+    void printBits(std::ostream& o) const {
         for (auto it = data(), end = it + size(); it != end; ++it) {
             auto byte = *it;
             for (int i = 7; i >= 0; --i) {
-                std::cout << ((byte >> i) & 1);
+                o << ((byte >> i) & 1);
             }
-            std::cout << " ";
+            o << " ";
         }
-        std::cout << "\n";
+        o << "\n";
     }
 
    private:
@@ -142,15 +143,15 @@ class BitReader {
         return get_bits_long(n);
     }
     // Метод для вывода данных (для проверки)
-    void printBits() const {
+    void printBits(std::ostream & o) const {
         for (auto it = buffer_begin; it != buffer_end; ++it) {
             auto byte = *it;
             for (int i = 7; i >= 0; --i) {
-                std::cout << ((byte >> i) & 1);
+                o << ((byte >> i) & 1);
             }
-            std::cout << " ";
+            o << " ";
         }
-        std::cout << "\n";
+        o << "\n";
     }
 
     size_t get_index() { return index; }
@@ -164,3 +165,15 @@ class BitReader {
     size_t index;
     size_t size_in_bits;
 };
+
+inline ostream& operator<<(ostream& o, BitWriter const& a) {
+    a(o);
+    return o;
+}
+
+inline ostream& operator<<(ostream& o, BitReader const& a) {
+    a(o);
+    return o;
+}
+
+
