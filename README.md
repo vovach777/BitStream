@@ -15,7 +15,7 @@ int main() {
     writer.flush();
     std::cout << writer;
 
-    BitReader reader(writer.data(), writer.size());
+    BitReader reader(writer.data(), writer.size(), writer.size_in_bits());
 
     std::cout << reader;
     return 0;
