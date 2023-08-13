@@ -74,18 +74,17 @@ static_inline void put_bits(PutBitContext *s, int n, uint32_t value)
         if (bit_left_ == 32)
             return;
    
-        vec[size_] = __builtin_bswap32(bit_buf_);       
-        // auto bit_left = bit_left_;
-        // auto bit_buf = bit_buf_;
-        // if (bit_left < 32)
-        //     bit_buf <<= bit_left;
-        // while (bit_left < 32) {
-        //     vec.push_back( bit_buf >> (32 - 8) );
-        //     bit_buf  <<= 8;
-        //     bit_left  += 8;
-        // }
-        // bit_left_ = 32;
-        // bit_buf_  = 0;
+        vec[size_] = 0;
+        auto byte_by_byte = reinterpret_cast<uint8_t*>( &vec[size_] );     
+        auto bit_left = bit_left_;
+        auto bit_buf = bit_buf_;
+        if (bit_left < 32)
+            bit_buf <<= bit_left;
+        while (bit_left < 32) {
+            *byte_by_byte++ = bit_buf >> (32 - 8);
+            bit_buf  <<= 8;
+            bit_left  += 8;
+        }
     }
 
     // Метод для вывода данных (для проверки)
