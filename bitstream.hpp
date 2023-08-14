@@ -1,3 +1,6 @@
+/*
+    based on ffmpeg code get_bits.h, put_bits.h
+*/
 #pragma once
 #include <cstdint>
 #include <iostream>
@@ -6,31 +9,6 @@
 #include <stdexcept>
 
 class BitWriter {
-/*
-
-static_inline void put_bits(PutBitContext *s, int n, uint32_t value)
-{
-    check_grow(s);
-    uint32_t bit_buf;
-    int bit_left;
-    bit_left = s->bit_left;
-    bit_buf  = s->bit_buf;
-
-    if (n < bit_left) {
-        bit_buf     = (bit_buf << n) | value;
-        bit_left   -= n;
-    } else {
-        bit_buf   <<= bit_left;
-        bit_buf    |= value >> (n - bit_left);
-        *((uint32_t*) s->buf_ptr) = __builtin_bswap32(bit_buf);
-        s->buf_ptr += 4;
-        bit_left   += 32 - n;
-        bit_buf     = value;
-    }
-    s->bit_buf  = bit_buf;
-    s->bit_left = bit_left;
-}
-*/
     inline void put_bits(int n, uint32_t value) {
 
     auto bit_left = bit_left_;
@@ -73,7 +51,6 @@ static_inline void put_bits(PutBitContext *s, int n, uint32_t value)
     void flush() {
         if (bit_left_ == 32)
             return;
-   
         vec[size_] = 0;
         auto byte_by_byte = reinterpret_cast<uint8_t*>( &vec[size_] );     
         auto bit_left = bit_left_;
@@ -175,12 +152,16 @@ class BitReader {
         buffer_end = buffer_ + buffer_size;
         index = 0;
     }
+    BitReader() = default;
     inline bool readBit() {
         return get_bits1();
     }
     inline auto readBits(int n) {
         return get_bits_long(n);
     }
+    // BitReader& operator=(BitReader&& other) {
+
+    // }
     // Метод для вывода данных (для проверки)
     void printBits(std::ostream & o) const {
         auto count  = size_in_bits;
@@ -205,8 +186,7 @@ class BitReader {
     const uint8_t *buffer;
     const uint8_t *buffer_end;
     size_t index;
-    public:
-    const size_t size_in_bits;
+    size_t size_in_bits;
 };
 
 inline std::ostream& operator<<(std::ostream& o, BitWriter const & a) {
@@ -218,4 +198,3 @@ inline std::ostream& operator<<(std::ostream& o, BitReader const& a) {
     a.printBits(o);
     return o;
 }
-
